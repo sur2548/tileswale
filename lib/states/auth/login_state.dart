@@ -19,7 +19,12 @@ class LoginState extends ViewModel {
 
     final user = pref.getUser();
 
-    if(user == null) return;
+    if (user == null) return;
+
+    if (user.email != emailController.text &&
+        user.password != passwordController.text) {
+      return;
+    }
 
     context.router.replace(const MainScreenRoute());
   }
