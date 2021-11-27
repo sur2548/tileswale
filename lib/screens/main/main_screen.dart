@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: [
          const DashboardScreen(),
-        const ProfileScreen(),
+         ProfileScreen(),
       ][_currentIndex],
     );
   }
