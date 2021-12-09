@@ -343,7 +343,7 @@ class Register extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const _CustomDivider(),
+                            const CustomDivider(),
                             Padding(
                               padding: padding,
                               child: TextFormField(
@@ -358,7 +358,7 @@ class Register extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const _CustomDivider(),
+                            const CustomDivider(),
                             Padding(
                               padding: padding,
                               child: TextFormField(
@@ -374,7 +374,7 @@ class Register extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const _CustomDivider(),
+                            const CustomDivider(),
                             Padding(
                               padding: padding,
                               child: TextFormField(
@@ -396,7 +396,7 @@ class Register extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _AuthButton(
+                  AuthButton(
                     title: 'SIGN UP',
                     onPressed: state.register,
                   ),
@@ -410,8 +410,8 @@ class Register extends StatelessWidget {
   }
 }
 
-class _CustomDivider extends StatelessWidget {
-  const _CustomDivider({Key? key}) : super(key: key);
+class CustomDivider extends StatelessWidget {
+  const CustomDivider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -423,11 +423,11 @@ class _CustomDivider extends StatelessWidget {
   }
 }
 
-class _AuthButton extends StatelessWidget {
+class AuthButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
 
-  const _AuthButton({
+  const AuthButton({
     Key? key,
     required this.title,
     required this.onPressed,

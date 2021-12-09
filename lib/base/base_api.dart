@@ -6,7 +6,6 @@ import 'package:tileswale/exceptions/exceptions.dart';
 abstract class BaseAPI {
   final http = Dio();
 
-
   String get baseURL => '';
 
   String? get token => null;
@@ -136,12 +135,15 @@ class TokenInterceptors extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    var headers = {
-      HttpHeaders.acceptHeader: 'application/json',
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-    };
+    options.headers.putIfAbsent(
+      HttpHeaders.acceptHeader,
+      () => 'application/json',
+    );
 
-    options.headers.addAll(headers);
+    options.headers.putIfAbsent(
+      HttpHeaders.authorizationHeader,
+      () => 'Bearer $token',
+    );
 
     super.onRequest(options, handler);
   }
