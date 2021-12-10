@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:tileswale/base/base.dart';
 import 'package:tileswale/get.dart';
@@ -100,7 +101,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     ConstrainedBox(
                       constraints: const BoxConstraints.expand(),
-                      child: const Register(),
+                      child: Register(),
                     ),
                   ],
                 ),
@@ -292,120 +293,122 @@ class Login extends StatelessWidget {
   }
 }
 
-class Register extends StatelessWidget {
-  const Register({Key? key}) : super(key: key);
+class Register extends ConsumerWidget {
+  Register({Key? key}) : super(key: key);
+
+  final form = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  void _register(WidgetRef ref) {
+    if (!form.currentState!.validate()) return;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Content<RegisterState>(
-      onStateReady: (state) => state.init(context),
-      create: (context, state, child) {
-        const padding = EdgeInsets.only(
-          top: 20.0,
-          bottom: 20.0,
-          left: 25.0,
-          right: 25.0,
-        );
+  Widget build(BuildContext context, WidgetRef ref) {
+    const padding = EdgeInsets.only(
+      top: 20.0,
+      bottom: 20.0,
+      left: 25.0,
+      right: 25.0,
+    );
 
-        return Container(
-          padding: const EdgeInsets.only(top: 23.0),
-          child: Column(
+    return Container(
+      padding: const EdgeInsets.only(top: 23.0),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.topCenter,
             children: <Widget>[
-              Stack(
-                alignment: Alignment.topCenter,
-                children: <Widget>[
-                  Card(
-                    elevation: 2.0,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Form(
-                      key: state.form,
-                      child: SizedBox(
-                        width: 300.0,
-                        height: 360.0,
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: padding,
-                              child: TextFormField(
-                                controller: state.nameController,
-                                keyboardType: TextInputType.text,
-                                validator:
-                                    ValidationBuilder().required().build(),
-                                textCapitalization: TextCapitalization.words,
-                                autocorrect: false,
-                                style: loginStyle,
-                                decoration: loginDecoration(
-                                  Icons.person,
-                                  'Name',
-                                ),
-                              ),
+              Card(
+                elevation: 2.0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Form(
+                  key: form,
+                  child: SizedBox(
+                    width: 300.0,
+                    height: 360.0,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: padding,
+                          child: TextFormField(
+                            controller: nameController,
+                            keyboardType: TextInputType.text,
+                            validator: ValidationBuilder().required().build(),
+                            textCapitalization: TextCapitalization.words,
+                            autocorrect: false,
+                            style: loginStyle,
+                            decoration: loginDecoration(
+                              Icons.person,
+                              'Name',
                             ),
-                            const CustomDivider(),
-                            Padding(
-                              padding: padding,
-                              child: TextFormField(
-                                controller: state.emailController,
-                                keyboardType: TextInputType.emailAddress,
-                                validator: ValidationBuilder().email().build(),
-                                autocorrect: false,
-                                style: loginStyle,
-                                decoration: loginDecoration(
-                                  Icons.email,
-                                  'Email Address',
-                                ),
-                              ),
-                            ),
-                            const CustomDivider(),
-                            Padding(
-                              padding: padding,
-                              child: TextFormField(
-                                controller: state.passwordController,
-                                validator:
-                                    ValidationBuilder().required().build(),
-                                obscureText: true,
-                                autocorrect: false,
-                                style: loginStyle,
-                                decoration: loginDecoration(
-                                  Icons.lock,
-                                  'Password',
-                                ),
-                              ),
-                            ),
-                            const CustomDivider(),
-                            Padding(
-                              padding: padding,
-                              child: TextFormField(
-                                controller: state.confirmPasswordController,
-                                validator:
-                                    ValidationBuilder().required().build(),
-                                obscureText: true,
-                                autocorrect: false,
-                                style: loginStyle,
-                                decoration: loginDecoration(
-                                  Icons.lock,
-                                  'Confirmation',
-                                ),
-                                textInputAction: TextInputAction.go,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        const CustomDivider(),
+                        Padding(
+                          padding: padding,
+                          child: TextFormField(
+                            controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: ValidationBuilder().email().build(),
+                            autocorrect: false,
+                            style: loginStyle,
+                            decoration: loginDecoration(
+                              Icons.email,
+                              'Email Address',
+                            ),
+                          ),
+                        ),
+                        const CustomDivider(),
+                        Padding(
+                          padding: padding,
+                          child: TextFormField(
+                            controller: passwordController,
+                            validator: ValidationBuilder().required().build(),
+                            obscureText: true,
+                            autocorrect: false,
+                            style: loginStyle,
+                            decoration: loginDecoration(
+                              Icons.lock,
+                              'Password',
+                            ),
+                          ),
+                        ),
+                        const CustomDivider(),
+                        Padding(
+                          padding: padding,
+                          child: TextFormField(
+                            controller: confirmPasswordController,
+                            validator: ValidationBuilder().required().build(),
+                            obscureText: true,
+                            autocorrect: false,
+                            style: loginStyle,
+                            decoration: loginDecoration(
+                              Icons.lock,
+                              'Confirmation',
+                            ),
+                            textInputAction: TextInputAction.go,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  AuthButton(
-                    title: 'SIGN UP',
-                    onPressed: state.register,
-                  ),
-                ],
+                ),
+              ),
+              AuthButton(
+                title: 'SIGN UP',
+                onPressed: () => _register(ref),
               ),
             ],
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
